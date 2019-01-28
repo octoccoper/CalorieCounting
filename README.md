@@ -1,1 +1,1 @@
-# Caloriecounting
+# CalorieCounting project
