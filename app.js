@@ -11,19 +11,21 @@ const ItemCtrl = (function () {
 
   // Data structure / State
   const data = {
-    items: [{
-      id: 0,
-      name: 'Banana',
-      calories: 200
-    }, {
-      id: 1,
-      name: 'Apple',
-      calories: 50
-    }, {
-      id: 2,
-      name: 'Cheeze',
-      calories: 300
-    }],
+    items: [
+      //   {
+      //   id: 0,
+      //   name: 'Banana',
+      //   calories: 200
+      // }, {
+      //   id: 1,
+      //   name: 'Apple',
+      //   calories: 50
+      // }, {
+      //   id: 2,
+      //   name: 'Cheeze',
+      //   calories: 300
+      //   }
+    ],
     currentItem: null,
     totalCalories: 0
   }
@@ -33,12 +35,12 @@ const ItemCtrl = (function () {
     getItems: function () {
       return data.items;
     },
-    addItem: function (name, calories) { 
+    addItem: function (name, calories) {
       let ID;
       // Create id
       if (data.items.length > 0) {
         ID = data.items[data.items.length - 1].id + 1;
-      } else { 
+      } else {
         ID = 0;
       }
 
@@ -87,6 +89,10 @@ const UICtrl = (function () {
       // Insert list items
       document.querySelector(UISelectors.itemList).innerHTML = html;
     },
+    clearInput: function () {
+      document.querySelector(UISelectors.itemNameInput).value = "";
+      document.querySelector(UISelectors.itemCaloriesInput).value = "";
+    },
     getSelectors: function () {
       return UISelectors;
     },
@@ -95,6 +101,31 @@ const UICtrl = (function () {
         name: document.querySelector(UISelectors.itemNameInput).value,
         calories: document.querySelector(UISelectors.itemCaloriesInput).value
       }
+    },
+    addListItem: function (item) {
+      // Show the list
+      document.querySelector(UISelectors.itemList).style.display = "block";
+
+      // Create li element
+      const li = document.createElement("li");
+
+      // Add class
+      li.className = "collection-item";
+
+      // Add id
+      li.id = `item-${item.id}`;
+
+      // Add html
+      li.innerHTML = `<strong>${item.name} </strong> <em>${item.calories} Calories</em>
+      <a href="#" class="secondary-content">
+        <i class="edit-item fa fa-pencil"></i>
+      </a>`;
+
+      // Insert item
+      document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
+    },
+    hideList: function () {
+      document.querySelector(UISelectors.itemList).style.display = "none";
     }
   }
 })();
@@ -122,6 +153,12 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
       // Add item
       const newItem = ItemCtrl.addItem(input.name, input.calories);
+
+      // Add item to the UI list
+      UICtrl.addListItem(newItem);
+
+      // Clear fields
+      UICtrl.clearInput();
     }
 
     e.preventDefault();
@@ -132,8 +169,13 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
     init: function () {
       const items = ItemCtrl.getItems();
 
-      // Populate list with items
-      UICtrl.populateItems(items);
+      // Check if any items
+      if (items.length === 0) {
+        UICtrl.hideList();
+      } else {
+        // Populate list with items
+        UICtrl.populateItems(items);
+      }
 
       // Load event listeners
       loadEventListeners();
