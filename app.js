@@ -57,6 +57,19 @@ const ItemCtrl = (function () {
     },
     logData: function () {
       return data;
+    },
+    getTotalCalories: function () {
+      let total = 0;
+
+      // Loop thrugh the items and add calories
+      data.items.forEach(function (item) {
+        total += item.calories;
+      })
+
+      // Set total calories in data structure
+      data.totalCalories = total;
+
+      return data.totalCalories;
     }
   }
 
@@ -69,7 +82,8 @@ const UICtrl = (function () {
     itemList: "#item-list",
     addBtn: ".add-btn",
     itemNameInput: "#item-name",
-    itemCaloriesInput: "#item-calories"
+    itemCaloriesInput: "#item-calories",
+    totalCalories: ".total-calories"
   };
 
   // Public methods
@@ -101,6 +115,9 @@ const UICtrl = (function () {
         name: document.querySelector(UISelectors.itemNameInput).value,
         calories: document.querySelector(UISelectors.itemCaloriesInput).value
       }
+    },
+    showTotalCalories(total) {
+      document.querySelector(UISelectors.totalCalories).textContent = total;
     },
     addListItem: function (item) {
       // Show the list
@@ -144,8 +161,8 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
   // Add item submit
   const itemAddSubmit = function (e) {
-    // Get form input from UICtrl
 
+    // Get form input from UICtrl
     const input = UICtrl.getItemInput();
 
     // Check for name and calorie input
@@ -156,6 +173,12 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
       // Add item to the UI list
       UICtrl.addListItem(newItem);
+
+      // Get total calories
+      const totalCalories = ItemCtrl.getTotalCalories();
+
+      // Show totalCalories on the UI
+      UICtrl.showTotalCalories(totalCalories);
 
       // Clear fields
       UICtrl.clearInput();
@@ -177,6 +200,12 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
         UICtrl.populateItems(items);
       }
 
+      // Get total calories
+      const totalCalories = ItemCtrl.getTotalCalories();
+
+      // Show totalCalories on the UI
+      UICtrl.showTotalCalories(totalCalories);
+
       // Load event listeners
       loadEventListeners();
     }
@@ -185,5 +214,4 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 })(ItemCtrl, UICtrl);
 
 // Initializing app
-
 AppCtrl.init();
