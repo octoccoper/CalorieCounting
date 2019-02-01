@@ -151,6 +151,12 @@ const UICtrl = (function () {
       document.querySelector(UISelectors.backBtn).style.display = "none";
       document.querySelector(UISelectors.addBtn).style.display = "inline";
     },
+    showEditState: function () {
+      document.querySelector(UISelectors.updateBtn).style.display = "inline";
+      document.querySelector(UISelectors.deleteBtn).style.display = "inline";
+      document.querySelector(UISelectors.backBtn).style.display = "inline";
+      document.querySelector(UISelectors.addBtn).style.display = "none";
+    },
     addListItem: function (item) {
       // Show the list
       document.querySelector(UISelectors.itemList).style.display = "block";
