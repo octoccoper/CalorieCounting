@@ -11,21 +11,7 @@ const ItemCtrl = (function () {
 
   // Data structure / State
   const data = {
-    items: [
-      //   {
-      //   id: 0,
-      //   name: 'Banana',
-      //   calories: 200
-      // }, {
-      //   id: 1,
-      //   name: 'Apple',
-      //   calories: 50
-      // }, {
-      //   id: 2,
-      //   name: 'Cheeze',
-      //   calories: 300
-      //   }
-    ],
+    items: [],
     currentItem: null,
     totalCalories: 0
   }
