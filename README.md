@@ -1,1 +1,2 @@
-# CalorieCounting project
+# CalorieCounting.
+Training project with using the Module pattern.
