@@ -182,17 +182,17 @@ const UICtrl = (function () {
       // Insert item
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
     },
-    updateListItem: function (item) { 
-      let listItems = document.querySelectorAll(UI.listItems);
+    updateListItem: function (item) {
+      let listItems = document.querySelectorAll(UISelectors.listItems);
 
       // Turn Node list into array
       listItems = Array.from(listItems);
 
       // Loop through list
-      listItems.forEach(function (listItem) { 
+      listItems.forEach(function (listItem) {
         const itemID = listItem.getAttribute("id");
 
-        if (itemID === `item-${item.id}`) { 
+        if (itemID === `item-${item.id}`) {
           document.querySelector(`#${itemID}`).innerHTML = `<strong>${item.name} </strong> <em>${item.calories} Calories</em>
           <a href="#" class="secondary-content">
             <i class="edit-item fa fa-pencil"></i>
@@ -295,6 +295,12 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
     // Update UI
     UICtrl.updateListItem(updatedItem);
+
+    // Get total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Show totalCalories on the UI
+    UICtrl.showTotalCalories(totalCalories);
 
     e.preventDefault();
   }
