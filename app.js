@@ -74,7 +74,7 @@ const ItemCtrl = (function () {
 
       return found;
     },
-    updateItemSubmit: function (name, calories) {
+    updateItem: function (name, calories) {
       // Calories to number
       calories = parseInt(calories);
 
@@ -99,6 +99,7 @@ const UICtrl = (function () {
 
   const UISelectors = {
     itemList: "#item-list",
+    listItems: "#item-list li",
     addBtn: ".add-btn",
     itemNameInput: "#item-name",
     itemCaloriesInput: "#item-calories",
@@ -181,6 +182,24 @@ const UICtrl = (function () {
       // Insert item
       document.querySelector(UISelectors.itemList).insertAdjacentElement("beforeend", li);
     },
+    updateListItem: function (item) { 
+      let listItems = document.querySelectorAll(UI.listItems);
+
+      // Turn Node list into array
+      listItems = Array.from(listItems);
+
+      // Loop through list
+      listItems.forEach(function (listItem) { 
+        const itemID = listItem.getAttribute("id");
+
+        if (itemID === `item-${item.id}`) { 
+          document.querySelector(`#${itemID}`).innerHTML = `<strong>${item.name} </strong> <em>${item.calories} Calories</em>
+          <a href="#" class="secondary-content">
+            <i class="edit-item fa fa-pencil"></i>
+          </a>`;
+        }
+      });
+    },
     hideList: function () {
       document.querySelector(UISelectors.itemList).style.display = "none";
     }
@@ -244,7 +263,7 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
   // Click edit item
   const itemEditClick = function (e) {
     if (e.target.classList.contains("edit-item")) {
-      // Get list item id 
+      // Get list of item id 
       const listId = e.target.parentNode.parentNode.id;
 
       // Break into an array
@@ -272,7 +291,10 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
     const input = UICtrl.getItemInput();
 
     // Update item 
-    const input = ItemCtrl.updateItemSubmit(input.name, input.calories);
+    const updatedItem = ItemCtrl.updateItem(input.name, input.calories);
+
+    // Update UI
+    UICtrl.updateListItem(updatedItem);
 
     e.preventDefault();
   }
