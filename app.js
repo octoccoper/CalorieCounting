@@ -113,6 +113,7 @@ const UICtrl = (function () {
     itemList: "#item-list",
     listItems: "#item-list li",
     addBtn: ".add-btn",
+    clearBtn: ".clear-btn",
     itemNameInput: "#item-name",
     itemCaloriesInput: "#item-calories",
     totalCalories: ".total-calories",
@@ -253,6 +254,9 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
     // Delete button click event
     document.querySelector(UISelectors.deleteBtn).addEventListener("click", itemDeleteSubmit);
+
+    // Delete button click event
+    document.querySelector(UISelectors.clearBtn).addEventListener("click", itemClearSubmit);
   };
 
   // Add item submit
@@ -327,8 +331,17 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
     e.preventDefault();
   }
+  // Clear items event
+  const itemClearSubmit = function (e) {
 
-  // Remove item on submit button
+    // Delete all items from data structure
+    ItemCtrl.clearAllItems();
+
+    e.preventDefault();
+
+  }
+
+  // Remove item event
   const itemDeleteSubmit = function (e) {
 
     // Get current item
