@@ -92,7 +92,7 @@ const ItemCtrl = (function () {
     },
     deleteItem: function (id) {
       // Get ids
-      ids = data.items.map(function (item) {
+      const ids = data.items.map(function (item) {
         return item.id;
       })
 
@@ -101,9 +101,6 @@ const ItemCtrl = (function () {
 
       // Remove item
       data.items.splice(index, 1);
-
-      // Remove from UI
-      UICtrl.removeListItem(currentItem.id);
     }
   }
 
@@ -222,12 +219,6 @@ const UICtrl = (function () {
       const itemID = `#item-${id}`;
       const item = document.querySelector(itemID);
       item.remove();
-      
-      // Get total calories
-      const totalCalories = ItemCtrl.getTotalCalories();
-
-      // Show totalCalories on the UI
-      UICtrl.showTotalCalories(totalCalories);
     }
   }
 })();
@@ -343,10 +334,25 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
     // Get current item
     const currentItem = ItemCtrl.getCurrentItem();
 
+    console.log("currentItem = ", currentItem);
+
     // Delete from data structure
     ItemCtrl.deleteItem(currentItem.id);
 
+    // Delete from UI
+    UICtrl.removeListItem(currentItem.id);
+
+    // Get total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Show totalCalories on the UI
+    UICtrl.showTotalCalories(totalCalories);
+
+    // Clear state
+    UICtrl.clearEditState();
+
     e.preventDefault();
+
   }
 
   // Public methods
