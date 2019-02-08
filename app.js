@@ -101,6 +101,11 @@ const ItemCtrl = (function () {
 
       // Remove item
       data.items.splice(index, 1);
+    },
+    // Clear all items event
+    clearAllItems: function () {
+      // Delete all items from data sctructure
+      data.items = [];
     }
   }
 
@@ -220,6 +225,18 @@ const UICtrl = (function () {
       const itemID = `#item-${id}`;
       const item = document.querySelector(itemID);
       item.remove();
+    },
+    clearItems: function () {
+      let listItems = document.querySelectorAll(UISelectors.listItems);
+
+      // Turn node list into an array
+      listItems = Array.from(listItems);
+
+      listItems.forEach(function (item) {
+        item.remove();
+      });
+
+      UICtrl.clearEditState();
     }
   }
 })();
@@ -336,6 +353,18 @@ const AppCtrl = (function (ItemCtrl, UICtrl) {
 
     // Delete all items from data structure
     ItemCtrl.clearAllItems();
+
+    // Clear UI
+    UICtrl.clearItems();
+
+    // Get total calories
+    const totalCalories = ItemCtrl.getTotalCalories();
+
+    // Show totalCalories on the UI
+    UICtrl.showTotalCalories(totalCalories);
+
+    // Hide the ul
+    UICtrl.hideList();
 
     e.preventDefault();
 
